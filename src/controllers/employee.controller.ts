@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction } from "express";
-import employeeService from "./../services/employee.service.js";
+import employeeService from "../services/employee.service.js";
 import {
   employeePayloadSchema,
   paginationSchema,
   paramsSchema,
-} from "./../validations/employee.validation.js";
+} from "../validations/employee.validation.js";
 
 export async function listEmployees(
   req: Request,

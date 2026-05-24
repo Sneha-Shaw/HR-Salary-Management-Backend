@@ -1,9 +1,11 @@
-import { PrismaClient, Employee } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "../lib/prisma.js";
+import type {
+  EmployeePayload,
+  EmployeeUpdatePayload,
+} from "../types/employee.types.js";
 
 export class EmployeeRepository {
-  async create(data: Omit<Employee, "id" | "createdAt" | "updatedAt">) {
+  async create(data: EmployeePayload) {
     return prisma.employee.create({ data });
   }
 
@@ -21,10 +23,10 @@ export class EmployeeRepository {
 
   async update(
     id: number,
-    data: Partial<Omit<Employee, "id" | "createdAt" | "updatedAt">>,
+    data: EmployeeUpdatePayload,
   ) {
     try {
-      return prisma.employee.update({ where: { id }, data });
+      return await prisma.employee.update({ where: { id }, data });
     } catch (error) {
       return null;
     }
@@ -32,7 +34,7 @@ export class EmployeeRepository {
 
   async delete(id: number) {
     try {
-      return prisma.employee.delete({ where: { id } });
+      return await prisma.employee.delete({ where: { id } });
     } catch (error) {
       return null;
     }

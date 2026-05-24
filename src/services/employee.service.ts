@@ -1,15 +1,19 @@
-import employeeRepository from "./../repositories/employee.repository.js";
-import type { Employee } from "@prisma/client";
+import employeeRepository from "../repositories/employee.repository.js";
+import type {
+  EmployeePayload,
+  EmployeeUpdatePayload,
+} from "../types/employee.types.js";
 
 export class EmployeeService {
+  constructor(private repository = employeeRepository) {}
   async list(page = 1, limit = 10) {
     const pageNumber = Math.max(1, page);
     const pageSize = Math.max(1, limit);
     const skip = (pageNumber - 1) * pageSize;
 
     const [data, total] = await Promise.all([
-      employeeRepository.findMany({ skip, take: pageSize }),
-      employeeRepository.count(),
+      this.repository.findMany({ skip, take: pageSize }),
+      this.repository.count(),
     ]);
 
     return {
@@ -24,22 +28,22 @@ export class EmployeeService {
   }
 
   async getById(id: number) {
-    return employeeRepository.findById(id);
+    return this.repository.findById(id);
   }
 
-  async create(employee: Omit<Employee, "id" | "createdAt" | "updatedAt">) {
-    return employeeRepository.create(employee);
+  async create(employee: EmployeePayload) {
+    return this.repository.create(employee);
   }
 
   async update(
     id: number,
-    updates: Partial<Omit<Employee, "id" | "createdAt" | "updatedAt">>,
+    updates: EmployeeUpdatePayload,
   ) {
-    return employeeRepository.update(id, updates);
+    return this.repository.update(id, updates);
   }
 
   async delete(id: number) {
-    return employeeRepository.delete(id);
+    return this.repository.delete(id);
   }
 }
 
