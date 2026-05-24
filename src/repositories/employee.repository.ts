@@ -1,9 +1,9 @@
-import { PrismaClient, Employee } from '@prisma/client';
+import { PrismaClient, Employee } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export class EmployeeRepository {
-  async create(data: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>) {
+  async create(data: Omit<Employee, "id" | "createdAt" | "updatedAt">) {
     return prisma.employee.create({ data });
   }
 
