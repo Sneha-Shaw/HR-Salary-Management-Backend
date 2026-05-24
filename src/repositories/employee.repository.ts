@@ -11,11 +11,32 @@ export class EmployeeRepository {
     return prisma.employee.findUnique({ where: { id } });
   }
 
-  async listAll() {
-    return prisma.employee.findMany();
+  async findMany(options: { skip?: number; take?: number } = {}) {
+    return prisma.employee.findMany(options);
   }
 
-  // Additional repository methods to be added later.
+  async count() {
+    return prisma.employee.count();
+  }
+
+  async update(
+    id: number,
+    data: Partial<Omit<Employee, "id" | "createdAt" | "updatedAt">>,
+  ) {
+    try {
+      return prisma.employee.update({ where: { id }, data });
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async delete(id: number) {
+    try {
+      return prisma.employee.delete({ where: { id } });
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 export default new EmployeeRepository();
